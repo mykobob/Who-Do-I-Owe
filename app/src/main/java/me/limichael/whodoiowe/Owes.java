@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 public class Owes implements Parcelable {
 
+    private static final int LIMIT = 5;
+
     private String personToPay;
     private double amount;
     private String description;
@@ -53,7 +55,13 @@ public class Owes implements Parcelable {
 
     @Override
     public String toString() {
-        return String.format("You owe %.2f to %s for %s", amount, personToPay, description);
+//        return String.format("You owe %.2f to %s for %s", amount, personToPay, description);
+        String[] tmp = description.split(" ");
+        String shortDescription = "";
+        for (int i = 0; i < Math.min(LIMIT, tmp.length); i++) {
+            shortDescription += tmp[i] + " ";
+        }
+        return String.format("%s - %.2f\n%s", personToPay, amount, shortDescription.trim());
     }
 
     @Override

@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class AddOwe extends ActionBarActivity {
+public class AddOwe extends Activity {
 
     private static final String TAG = "AddOwe Tag";
 
