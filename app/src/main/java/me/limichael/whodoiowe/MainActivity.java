@@ -27,6 +27,8 @@ public class MainActivity extends Activity {
     private ListView mainList;
     private Button addOwe;
 
+    private SwipeDetector swipeDetector;
+
     private static final int CREATE_NEW_OWE = 234235352;
 
     @Override
@@ -34,6 +36,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        swipeDetector = new SwipeDetector();
         list = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
 
@@ -41,6 +44,7 @@ public class MainActivity extends Activity {
         addOwe = (Button) findViewById(R.id.new_owe);
 
         mainList.setAdapter(adapter);
+        mainList.setOnTouchListener(swipeDetector);
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -55,17 +59,13 @@ public class MainActivity extends Activity {
 //                                view.setAlpha(1);
 //                            }
 //                        });
-                Intent intent = new Intent(getBaseContext(), OwesDescription.class);
-                intent.putExtra("data", item);
-                startActivity(intent);
-            }
-        });
-
-        addOwe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), AddOwe.class);
-                startActivityForResult(intent, CREATE_NEW_OWE);
+                if(swipeDetector.swipeDetected()) {
+                    if(swipeDetector.getAction() == SwipeDetector.Action.LR || swipeDetector.getAction() == SwipeDetector.Action.RL) {
+                        Intent intent = new Intent(getBaseContext(), OwesDescription.class);
+                        intent.putExtra("data", item);
+                        startActivity(intent);
+                    }
+                }
             }
         });
 
